@@ -31,11 +31,17 @@ const CartItem = ({ onContinueShopping }) => {
   };
 
   const handleDecrement = (item) => {
-    dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+    if (item.quantity <= 1) {
+      // If quantity would go to 0, remove the item entirely
+      dispatch(removeItem(item.name));
+    } else {
+      // Otherwise decrease the quantity by 1
+      dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+    }
   };
 
   const handleRemove = (item) => {
-    dispatch(removeItem(item));
+    dispatch(removeItem(item.name)); // Pass only the item name to match the reducer logic
   };
 
   // Calculate total cost based on quantity for an item
